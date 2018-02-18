@@ -1,22 +1,22 @@
 package javainuse;
 
 
-import javainuse.route.SimpleRouteBuilder;
-import org.apache.camel.CamelContext;
-import org.apache.camel.impl.DefaultCamelContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MainApp {
     public static void main(String[] args) {
-        SimpleRouteBuilder routeBuilder = new SimpleRouteBuilder();
-        CamelContext ctx = new DefaultCamelContext();
+        AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("appContext-camel.xlm");
+
+        ctx.start();
+
         try {
-            ctx.addRoutes(routeBuilder);
-            ctx.start();
             Thread.sleep(5 * 60 * 1000);
-            ctx.stop();
         }
-        catch (Exception e) {
+        catch (InterruptedException e) {
             e.printStackTrace();
         }
+        ctx.stop();
+        ctx.close();
     }
 }
